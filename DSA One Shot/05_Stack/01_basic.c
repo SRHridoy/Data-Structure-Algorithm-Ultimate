@@ -23,10 +23,73 @@ typedef struct
 }Stack;
 
 
+void push(Stack *s, int item)
+{
+    if(s->top<STACK_MAX)
+    {
+        s->data[s->top] = item;
+        s->top = s->top + 1;
+    }
+    else
+    {
+        printf("Stack is full!\n");
+    }
+}
 
+int pop(Stack *s)
+{
+    int item;
+    if(s->top == 0)
+    {
+        printf("Stack is empty!\n");
+        return -1;
+    }
+    else
+    {
+        s->top = s->top -1 ;
+        item = s->data[s->top];
+    }
+    return item;
+}
+
+void printStack(Stack *s)
+{
+    if(s->top == 0)
+    {
+        printf("Stack is empty!\n");
+    }
+    else
+    {
+    
+        printf("The stack elements are : ");
+        for (int i = 0; i <s->top ; i++)
+        {
+            printf("%d ",s->data[i]);
+        }
+        printf("\n");
+    }
+    
+}
 
 int main()
 {
-    
+    Stack myStack;
+    int item;
+
+    myStack.top = 0;
+    printStack(&myStack);
+
+    push(&myStack, 1);
+    push(&myStack, 5);
+    push(&myStack, 8);
+    printStack(&myStack);
+
+
+
+    item = pop(&myStack);
+    printf("%d is poped out.\n",item);
+    printStack(&myStack);
+
+
     return 0;
 }

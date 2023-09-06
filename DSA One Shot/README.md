@@ -400,3 +400,294 @@ void insertion_sort(int *array, int n)
     
 }
 ```
+
+>## Stack :
+
+```c
+/*
+Stack mane stup...Eta eksathe ektar opor ekta biscuit rakhar moto... notun biscuit rakhar joone opore ebong khete chaileo opor theke niye khete hobe...Niye neya ke pop ar diya k push bole...
+
+SO, Stack LIFO---->Last in first out...
+
+    4   5   2   3   ___     ___     ____    Top = 3
+
+    push korle top 1 bare
+    4   5   2   3    6      ___     ____   Top = 4
+
+    pop korle top 1 kome
+    4   5   2   3   ___     ___     ____    Top = 3
+
+*/
+#include<stdio.h>
+
+#define STACK_MAX 100
+
+typedef struct
+{
+    int top;
+    int data[STACK_MAX];
+}Stack;
+
+
+void push(Stack *s, int item)
+{
+    if(s->top<STACK_MAX)
+    {
+        s->data[s->top] = item;
+        s->top = s->top + 1;
+    }
+    else
+    {
+        printf("Stack is full!\n");
+    }
+}
+
+int pop(Stack *s)
+{
+    int item;
+    if(s->top == 0)
+    {
+        printf("Stack is empty!\n");
+        return -1;
+    }
+    else
+    {
+        s->top = s->top -1 ;
+        item = s->data[s->top];
+    }
+    return item;
+}
+
+void printStack(Stack *s)
+{
+    if(s->top == 0)
+    {
+        printf("Stack is empty!\n");
+    }
+    else
+    {
+    
+        printf("The stack elements are : ");
+        for (int i = 0; i <s->top ; i++)
+        {
+            printf("%d ",s->data[i]);
+        }
+        printf("\n");
+    }
+    
+}
+
+int main()
+{
+    Stack myStack;
+    int item;
+
+    myStack.top = 0;
+    printStack(&myStack);
+
+    push(&myStack, 1);
+    push(&myStack, 5);
+    push(&myStack, 8);
+    printStack(&myStack);
+
+
+
+    item = pop(&myStack);
+    printf("%d is poped out.\n",item);
+    printStack(&myStack);
+
+
+    return 0;
+}
+
+```
+
+>## Queue:
+
+```c
+/*
+Queue is like ticket katar sari ba line and fair game ...kew pore ese age dhukte parbe nah...jea age asbe se age kaj sarbe abar je pore asbe se sobar piche thakbe...
+
+Front / Head indicate kore Queue er  1st e je ace ar 
+Tail / Rear indicate kore Queue er last e je ace tar porer ghor...
+
+Head = Tail mane holo Queue empty...
+
+Ekhane insert korake bole ENQUEUE
+EKhane Delete korake bole DEQUEUE
+
+Generally, we use circular queue to save our memory...
+Circular queue te Head er ager ghor faka rakha lage...tai
+jodi queue size = 1000 hoi then amra 999 ta element rakhte parbo...
+
+Circullarly, ses theke abar first e jete mod(%) use korbo...
+
+Example :                               Here,
+        4   5   2   3   _   _   _   Head/Front =0 Tail/Rear = 4
+        4   5   2   3   6   _   _   Head/Front =0 Tail/Rear = 5
+        _   5   2   3   6   _   _   Head/Front =1 Tail/Rear = 5 
+*/
+
+#include<stdio.h>
+#define QUEUEMAX 1000
+
+typedef struct
+{
+    int head;
+    int tail;
+    int data[QUEUEMAX+1];
+}Queue;
+
+//O(1)
+void enqueue(Queue *queue,int item)
+{ 
+    if((queue->tail + 1) % (QUEUEMAX + 1) == queue->head)
+    {
+        printf("Queue is full!\n");
+        return;
+    }
+    queue->data[queue->tail] = item;
+    queue->tail = (queue->tail + 1) % (QUEUEMAX+1);
+}
+
+int  dequeue(Queue *queue)
+{   
+    int item;
+
+    if(queue->head == queue->tail)
+    {
+        printf("The Queue is Empty!\n");
+        return -1;
+    }
+
+    item = queue->data[queue->head];
+    queue->head = (queue->head + 1) % (QUEUEMAX + 1);
+    return item;
+}
+//O(1)
+void printQueue(Queue *queue)
+{
+    printf("Head = %d and Tail = %d \n",queue->head,queue->tail);
+
+    if(queue->head == queue->tail)
+    {
+        printf("The Queue is Empty!\n");
+    }
+    else
+    {   
+        printf("The Queue is : ");
+        for (int i = queue->head; i < queue->tail; i = (i+1) % (QUEUEMAX + 1))
+        {
+            printf("%d ", queue->data[i]);
+        }
+        printf("\n");
+    }
+}
+
+void printDequeuedItem(int item)
+{
+    if(item==-1)
+        printf("Failed!\n");
+    else
+        printf("%d is dequeued from queue!\n",item);
+}
+
+int main()
+{
+    Queue myQueue;
+    int item;
+
+    myQueue.head = 0;
+    myQueue.tail = 0;
+    printQueue(&myQueue);
+
+    enqueue(&myQueue,1);
+    printQueue(&myQueue);
+
+    enqueue(&myQueue,5);
+    printQueue(&myQueue);
+
+    item = dequeue(&myQueue);
+    printDequeuedItem(item);
+    printQueue(&myQueue);
+
+    item = dequeue(&myQueue);
+    printDequeuedItem(item);
+    printQueue(&myQueue);
+
+    item = dequeue(&myQueue);
+    printDequeuedItem(item);
+    printQueue(&myQueue);
+
+    return 0;
+}
+```
+
+>## Linked List : 
+
+```c
+/*
+Linked List e consecutive vabe memory allocate hoi nah...
+ekhane 2 ta part thake
+                        (i)Data part.
+                        (ii)Link part.(Address of next data)
+                        ei 2 ta k eksathe bola hoi NODE...
+
+    Head pointer : Staring node addesss...
+*/
+
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct node Node;
+
+struct node
+{
+    int data;
+    Node *next;
+};
+
+//Creating Node : 
+Node *createNode(int item, Node *next)
+{
+    Node *newNode = (Node*) malloc(sizeof(Node));
+    if(newNode == NULL)
+    {
+        printf("Error! Could not create a new node!\n");
+        exit(1);
+    }
+
+    newNode->data = item;
+    newNode->next = next;
+
+    return newNode;
+}
+
+int main()
+{
+    Node *n;
+    n = createNode(10,NULL);
+    printf("Data ;: %d\n",n->data);
+    return 0;
+}
+```
+
+### Creating a node :
+
+```c
+/Creating Node : 
+Node *createNode(int item, Node *next)
+{
+    Node *newNode = (Node*) malloc(sizeof(Node));
+    if(newNode == NULL)
+    {
+        printf("Error! Could not create a new node!\n");
+        exit(1);
+    }
+
+    newNode->data = item;
+    newNode->next = next;
+
+    return newNode;
+}
+```
