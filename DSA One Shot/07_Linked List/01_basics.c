@@ -39,6 +39,6 @@ int main()
 {
     Node *n;
     n = createNode(10,NULL);
-    printf("Data ;: %d\n",n->data);
+    printf("Data : %d\n",n->data);
     return 0;
 }
